@@ -35,7 +35,7 @@ export const PreviewMessage = ({
         )}
 
         <div className="flex flex-col gap-2 w-full">
-          {message.parts &&
+          {message.parts ? (
             message.parts.map((part: any, index: number) => {
               if (part.type === "text") {
                 return (
@@ -86,7 +86,14 @@ export const PreviewMessage = ({
                 );
               }
               return null;
-            })}
+            })
+          ) : (
+            message.content && (
+              <div className="flex flex-col gap-4">
+                <Markdown>{message.content}</Markdown>
+              </div>
+            )
+          )}
         </div>
       </div>
     </motion.div>

@@ -31,7 +31,9 @@ export function sanitizeUIMessages(
   });
 
   return messagesBySanitizedParts.filter((message) => {
-    if (!message.parts || message.parts.length === 0) return false;
+    if (!message.parts || message.parts.length === 0) {
+      return typeof message.content === "string" && message.content.length > 0;
+    }
 
     return message.parts.some((part: any) => {
       if (part.type === "text" && part.text?.length > 0) return true;
