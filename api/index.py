@@ -24,6 +24,7 @@ async def _vercel_set_headers(request: FastAPIRequest, call_next):
 
 class Request(BaseModel):
     messages: List[ClientMessage]
+    id: str | None = None
 
 
 @app.post("/api/chat")
@@ -32,7 +33,7 @@ async def handle_chat_data(request: Request, protocol: str = Query('data')):
     prompt = convert_to_prompt(messages)
 
     response = StreamingResponse(
-        stream_text(prompt, AVAILABLE_TOOLS, protocol),
+        stream_text(prompt, AVAILABLE_TOOLS, protocol, request.id),
         media_type="text/event-stream",
     )
     return patch_response_with_headers(response, protocol)
